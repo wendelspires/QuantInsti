@@ -38,7 +38,6 @@ x_set.intersection (y_set) #return de intersection.
 #x_set & y_set intersection can be performed by using the ampersand '&' operator
 
 x_set.difference (y_set) #values what as in set 1 and not at set 2
-
 x_set.difference_update(y_set) # the metod removes all the elements of set 2 common to set 1in set 1, and updates
 
 print (x_set)
