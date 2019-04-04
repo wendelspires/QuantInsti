@@ -39,6 +39,39 @@ plt.grid (True)
 
 plt.show()
 
------------------------------------------------Bollinger Bands with market data from MT5----------------------------------------------
+#---------------------------------------------------Importando do MetaTrader----------------------------------------------
 
+import pandas as pd
+
+path = ('C:\\Dados\\WIN@D_Daily.csv')
+df = pd.read_csv(path, delimiter='\t')
+df.head()
+
+def Bollinger_Bands (data,n):
+    
+    #Moving Average
+    MA = data['<CLOSE>'].rolling(window=n).mean()
+    
+    #Standard deviation
+    SD = data['<CLOSE>'].rolling(window=n).std()
+    
+    data['Lower_BB'] = MA - (2 * SD)
+    data['Upper_BB'] = MA + (2 * SD)
+    
+    return data
+
+n = 2
+
+bb = Bollinger_Bands (df,n)
+bb.tail()
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(20,10))
+plt.plot (bb["<CLOSE>"],'b')
+plt.plot (bb.Lower_BB,'g')
+plt.plot (bb.Upper_BB,'r')
+plt.grid (True)
+
+plt.show()
 
