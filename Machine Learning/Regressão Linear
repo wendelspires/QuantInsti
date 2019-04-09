@@ -1,0 +1,37 @@
+#------------------------------------------------Regressão Linear---------------------------------------------------------
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import datasets, linear_model
+
+#load diabetes dataset
+diabetes = datasets.load_diabetes()
+diabetes_X = diabetes.data[:, np.newaxis,2]
+
+#divide os dados em sets de training/testing
+diabetes_X_train = diabetes_X[:-20]
+diabetes_X_test = diabetes_X[-20:]
+
+#divide os dados em sets de training/testing
+diabetes_y_train = diabetes.target[:-20]
+diabetes_y_test = diabetes.target[-20:]
+
+#criando a função regressão linear
+regr = linear_model.LinearRegression()
+
+#treine o modelo usando a regressão linear
+regr.fit(diabetes_X_train,diabetes_y_train)
+
+#coeficiente linear
+print ('Coeficiente: \n', regr.coef_)
+
+#erro quadrático médio
+print ("O erro quadrático médio: ", np.mean((regr.predict(diabetes_X_test)- diabetes_y_test)**2))
+
+#plotando o grafico
+
+plt.scatter(diabetes_X_test,diabetes_y_test, color='black')
+plt.plot (diabetes_X_test,regr.predict(diabetes_X_test), color ='blue',
+         linewidth=3)
+plt.xticks(())
+plt.yticks (())
+plt.show()
