@@ -1,0 +1,37 @@
+import pandas as pd
+import numpy as np
+
+path = ('C:\\Dados\\PETR4_Daily.csv')
+df = pd.read_csv (path, delimiter='\t')
+
+df.head()
+
+#fechamento = df.loc[:,'<CLOSE>'] #utilizando o loc para indexar uma coluna [linhas,colunas]
+open_close = df.loc[:,['<OPEN>','<CLOSE>']] #utilizando o loc para indexar 2 colunas coluna [linhas,colunas]
+open_close
+
+df.iloc[:,1:5]
+
+#Missing values, True or false
+
+print (df['<CLOSE>'].isnull()) #return True if is Not a Number
+print (df['<CLOSE>'].notnull()) #return True if is a number
+
+#irá substituir os NaN por o número 1000
+df.fillna(1000)
+
+df['<CLOSE>'].fillna(100)
+df['<OPEN>'].fillna(method='backfill') #method backfill, ele verifica a próxima linha e substitui o valor
+df['<OPEN>'].fillna(method='ffill') #substitui o NaN pelo valor anterior
+
+#will remove the rows which has NaN values
+df.dropna()
+
+#will remove the columns wich has NaN values
+df.dropna(axis=1)
+
+df2 = pd.DataFrame ({'one':[10,20,30,40,50,2000], 'two':[1000,0,20,30,40,50]})
+df2
+
+#substituir valor por outro
+df2.replace({1000:10,2000:60})
