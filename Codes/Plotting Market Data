@@ -28,7 +28,7 @@ import numpy as np
 path ('C:\\Dados\\WIN@D_M1.csv')
 df = pd.read_csv(path,delimiter='\t')
 
-df_oc = df[[<'DATE'>,'<OPEN>','<CLOSE>']]
+df_oc = df[['<DATE>','<OPEN>','<CLOSE>']]
 df_oc.set_index('<DATE>',inplace=True)
 
 plt.figure (figsize=(20,7))
