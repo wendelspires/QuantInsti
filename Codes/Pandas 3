@@ -20,42 +20,42 @@ print (df['<LOW>'].diff()) #retorna a diferença dos valores anteriores
 print (df['<CLOSE>'].pct_change()) #retorna a variacao em % do dia anterior
 
 #mostrar a variacao media do preco de fechamento
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-plt.figure(figsize=(20,10))
-plt.ylabel('Retorno em %')
-df['<CLOSE>'].pct_change().plot()
+import matplotlib.pyplot as plt
+%matplotlib inline
+plt.style.use('seaborn-darkgrid') # a package for better visualisation
+
+plt.figure(figsize = (10,5))
+plt.ylabel('Retorno diário ')
+df["<CLOSE>"].pct_change().plot()
 plt.show()
 
-df['<OPEN>'].var() #variancia do ativo
-df['<OPEN>'].std() #desvio padrao do ativo
+#variancia
+print (df["<CLOSE>"].var())
+#desvio padrão
+print (df["<CLOSE>"].std())
+# média móvel de 20 dias
+ma = df['<CLOSE>'].rolling(window=20).mean()
 
-#calculando a media movel do ativo
-df['<CLOSE>'].rolling(window=20).mean().plot()
 
 #plotando a media movel junto no grafico de preço
+
 import matplotlib.pyplot as plt
-import seaborn as sns
+%matplotlib inline
 
-plt.figure(figsize=(20,10))
-plt.ylabel('Closing Price')
-
-
-df['<CLOSE>'].rolling(window=20).mean().plot()
+plt.figure(figsize = (20,10))
+plt.ylabel('<CLOSE>')
+plt.plot (ma,'r')
 df["<CLOSE>"].plot()
-
 plt.show()
 
-petr4 = pd.read_csv('C:\\Dados\\PETR4_Daily.csv',delimiter='\t')
-petr3 = pd.read_csv('C:\\Dados\\PETR3_Daily.csv',delimiter='\t')
+df1 = pd.read_csv('C:\\Dados\\PETR4.csv',delimiter='\t')
+df2 = pd.read_csv('C:\\Dados\\PETR3.csv',delimiter='\t')
 
 #covariancia/correlação dos ativos
-petr4["<CLOSE>"].cov(petr3["<CLOSE>"])
-petr4["<CLOSE>"].corr(petr3["<CLOSE>"])
+df1["<CLOSE>"].cov(df2["<CLOSE>"])
+df1["<CLOSE>"].corr(df2["<CLOSE>"])
 
-#distribuição normal
 import seaborn as sns
-
 sns.set(color_codes = True)
-sns.distplot(df['<CLOSE>'])
+sns.distplot(df1['<CLOSE>'])
