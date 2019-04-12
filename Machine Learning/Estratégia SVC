@@ -1,0 +1,32 @@
+#bibliotecas
+from sklearn.svm import SVC
+from sklearn.metrics import scorer
+from sklearn.metrics import accuracy_score
+
+#para manipulação de dados
+import pandas as pd
+import numpy as np
+
+#para plotar
+import matplotlib.pyplot as plt
+import seaborn
+
+from iexfinance.stocks import get_historical_data
+from datetime import datetime
+
+start = datetime(2017,1,1)
+end = datetime(2018,1,1)
+
+df = get_historical_data('SPY', start = start, end = end, output_format = 'pandas')
+df = df.dropna()
+df.head()
+
+df = df [['open','high','low','close']]
+
+df.close.plot (figsize=(10,5))
+plt.ylabel("S&P500 Price")
+plt.show()
+
+df.close.plot (figsize=(10,5))
+plt.ylabel("S&P500 Price")
+plt.show()
