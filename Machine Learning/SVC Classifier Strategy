@@ -1,0 +1,72 @@
+#machine learning
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+
+#manipulação de dados
+import pandas as pd
+import numpy as np
+
+#plotagem
+import matplotlib.pyplot as plt
+plt.style.use('fivethirtyeight')
+
+path = 'C:\\Dados\\WIN@D_Daily.csv'
+df = pd.read_csv(path, delimiter='\t')
+df = df.set_index(df['<DATE>'])
+df = df.drop(columns='<DATE>')
+df.head()
+
+#Predictor variables
+df['Open-Close'] = df['<OPEN>'] - df['<CLOSE>']
+df['High-Low'] = df['<HIGH>'] - df['<LOW>']
+X = df[['Open-Close','High-Low']]
+X.head()
+
+#target variable
+#se fechamento de ontém for maior que o fechamento, compre, caso contrário, venda.
+y = np.where(df['<CLOSE>'].shift(-1) > df['<CLOSE>'],1,-1)
+
+split_percentage = 0.8
+#split int
+split = int(split_percentage*len(df))
+
+#treinar os dados
+X_train = X[:split]
+y_train = y[:split]
+
+#data de teste
+X_test = X[split:]
+y_test = y[split:]
+
+#support vector classifier
+#iremos usar a função SVC do sklearn para criar nosso modelo de classificação usando o método fit() para treinar os dados
+#Lembrar de escrever gamma='auto' no SVC()
+cls = SVC(gamma='scale').fit(X_train,y_train)
+
+#precisão do teste e do treino
+
+accuracy_train = accuracy_score(y_train,cls.predict(X_train))
+accuracy_test = accuracy_score(y_test, cls.predict(X_test))
+
+print('\nPrecisão do Treino:{: .2f}%'.format(accuracy_train))
+print('\nPrecisão do Teste: {: .2f}%'.format(accuracy_test))
+
+#sinal
+df['Sinal'] = cls.predict(X)
+
+#calcular o retorno diário
+df['Retorno'] = df['<CLOSE>'].pct_change()
+
+#calcular o retorno da estratégia
+df['Strategy_Return'] = df['Retorno'] * df['Sinal']
+
+#calcular retorno geometricos
+geometric_returns = (df['Strategy_Return'].iloc[split:]+1).cumprod()
+
+#plotar retorno geometrico
+
+geometric_returns.plot(figsize=(10,5))
+plt.ylabel("Retorno da Estratégia (%)")
+plt.xlabel("Data")
+plt.show()
+
