@@ -41,32 +41,37 @@ plt.show()
 
 #---------------------------------------------------Importando do MetaTrader----------------------------------------------
 
+#importando e lendo os arquivos
 import pandas as pd
+import matplotlib.pyplot as plt
 
-path = ('C:\\Dados\\WIN@D_Daily.csv')
+path = ('C:\\Dados\\WIN$D_H1.csv')
 df = pd.read_csv(path, delimiter='\t')
 df.head()
 
+#função de bandas de bollinger
 def Bollinger_Bands (data,n):
     
-    #Moving Average
+    #Média Móvel
     MA = data['<CLOSE>'].rolling(window=n).mean()
     
-    #Standard deviation
+    #Desvio Padrão
     SD = data['<CLOSE>'].rolling(window=n).std()
     
+    #Criando a banda superior e inferior usando um desvio padrão de 2
     data['Lower_BB'] = MA - (2 * SD)
     data['Upper_BB'] = MA + (2 * SD)
     
     return data
 
-n = 2
+#Período da média móvel
+n = 20
 
+#Função de Bandas de Bollinger
 bb = Bollinger_Bands (df,n)
 bb.tail()
 
-import matplotlib.pyplot as plt
-
+#plotando as bandas de bollinger
 plt.figure(figsize=(20,10))
 plt.plot (bb["<CLOSE>"],'b')
 plt.plot (bb.Lower_BB,'g')
@@ -74,4 +79,5 @@ plt.plot (bb.Upper_BB,'r')
 plt.grid (True)
 
 plt.show()
+
 
